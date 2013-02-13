@@ -5,7 +5,10 @@ import tempfile
 libbowtie_library_location = \
     os.path.join(os.path.dirname(os.path.abspath(__file__)), "libbowtie2.so")
 
-_libbowtie = ctypes.CDLL(libbowtie_library_location)
+try:
+    _libbowtie = ctypes.CDLL(libbowtie_library_location)
+except OSError:
+    _libbowtie = ctypes.CDLL("libbowtie2.so")
 _bowtie_c_func = _libbowtie.bowtie
 
 def bowtie(index, outfile_name, unpaired=None, m1=None, m2=None,
